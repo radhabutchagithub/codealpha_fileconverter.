@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Converter</title>
+</head>
+<body>
+    <input type="file" id="fileInput">
+    <button onclick="convertFile()">Convert to Uppercase</button>
+
+    <script>
+        function convertFile() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var contents = e.target.result;
+                    var convertedContents = contents.toUpperCase();
+                    downloadFile(convertedContents);
+                };
+                reader.readAsText(file);
+            } else {
+                alert("Please select a file.");
+            }
+        }
+
+        function downloadFile(contents) {
+            var element = document.createElement('a');
+            var file = new Blob([contents], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'converted_file.txt';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+</body>
+</html>
